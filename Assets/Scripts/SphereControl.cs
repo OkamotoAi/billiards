@@ -28,15 +28,16 @@ public class SphereControl : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && !pulling){ //左ボタンクリック時
-            if (pulling = getClickObj()){
+            pulling = getClickObj();
+            if (pulling){
                 down = new Vector3(-Input.mousePosition.x, 0 ,-Input.mousePosition.y);
                 down = this.transform.position;
                 Debug.Log("down" + down);
                 this.direction.enabled = true;
                 this.direction.SetPosition(0, this.transform.position);
                 this.direction.SetPosition(1, this.transform.position);
-                
             }
+
         }else if (Input.GetMouseButton(0) && pulling){ //ボタンドラッグ時 
             var ray = new Ray();
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -46,10 +47,9 @@ public class SphereControl : MonoBehaviour
             this.direction.SetPosition(1, rayhit.point);
 
         } else if (Input.GetMouseButtonUp(0) && pulling){ //ボタンリリース時 
-            Debug.Log("ボタンが離された");
             up =  new Vector3(-Input.mousePosition.x, 0 ,-Input.mousePosition.y);
             up = this.direction.GetPosition(1);
-            Debug.Log("up" + up);
+            Debug.Log("up" + pulling);
             force = down-up; //外力の設定
             Debug.Log("クリックした点の座標:" + force);
             transform.GetComponent<Rigidbody>().AddForce(force * forceCoefficient);
